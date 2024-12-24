@@ -6,7 +6,7 @@
   <p align="center">
     A fun and educational interactive solar system visualization built with React, TypeScript, and Framer Motion.
     <br />
-    <a href="">View Demo</a>
+    <a href="https://solar-system-one-pied.vercel.app/">View Live Demo</a>
     ·
     <a href="https://github.com/RaHasib/SolarSystem/issues">Report Bug</a>
     ·
