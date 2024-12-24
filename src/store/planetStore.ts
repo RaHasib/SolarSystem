@@ -137,7 +137,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       description: 'Earth\'s faithful companion! The only place beyond Earth that humans have walked on. Home to the most famous footprint in history! 👨‍🚀',
       facts: [
         '👣 First visited by humans in 1969',
-        '🌊 ControlPanel Earth\'s tides',
+        '🌊 Controls Earth\'s tides',
         '🎭 Always shows the same face to Earth',
         '🏃‍♂️ Slowly moving away from Earth at 3.8cm per year',
         '💫 Creates beautiful solar and lunar eclipses',
@@ -154,6 +154,62 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       funFact: 'The Moon is gradually moving away from Earth at a rate of about 3.8 centimeters per year!',
       explorationStatus: 'First visited by humans in 1969 with Apollo 11. Multiple missions since then, including recent robotic missions from various space agencies.',
     },
+    {
+      id: 'phobos',
+      name: 'Phobos',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #8B7355, #696969)',
+      size: 8,
+      orbitRadius: 25,
+      rotationSpeed: 4,
+      description: 'The larger and inner of Mars\' two moons, Phobos is getting closer to Mars each year!',
+      facts: [
+        '🏃‍♂️ Orbits Mars three times a day',
+        '🌑 Getting closer to Mars by 1.8cm each year',
+        '🗿 Heavily cratered surface',
+        '🛸 May break apart in 30-50 million years',
+        '📏 Only 22.2 km in diameter'
+      ],
+      stats: {
+        temperature: '-40°C',
+        mass: '1.06 × 10^16 kg',
+        diameter: '22.2 km',
+        dayLength: '7.7 hours',
+        gravity: '0.0057 m/s²',
+        atmosphere: ['None'],
+        distanceFromSun: '9,377 km from Mars'
+      },
+      funFact: 'Phobos orbits so close to Mars that it appears to rise in the west and set in the east twice each Martian day!',
+      explorationStatus: 'Observed by various Mars missions, including Mars Reconnaissance Orbiter and Mars Express.'
+    },
+    {
+      id: 'deimos',
+      name: 'Deimos',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #696969, #4A4A4A)',
+      size: 6,
+      orbitRadius: 35,
+      rotationSpeed: 7,
+      description: 'The smaller and outer moon of Mars, Deimos is tiny but fascinating!',
+      facts: [
+        '🌘 Takes 30.3 hours to orbit Mars',
+        '💫 Likely a captured asteroid',
+        '🪨 Very irregular shape',
+        '🔭 Discovered in 1877',
+        '📏 Only 12.4 km in diameter'
+      ],
+      stats: {
+        temperature: '-40°C',
+        mass: '1.48 × 10^15 kg',
+        diameter: '12.4 km',
+        dayLength: '30.3 hours',
+        gravity: '0.003 m/s²',
+        atmosphere: ['None'],
+        distanceFromSun: '23,460 km from Mars'
+      },
+      funFact: 'From Mars\' surface, Deimos would appear about as bright as Venus appears from Earth!',
+      explorationStatus: 'Studied by various Mars missions, though no spacecraft has yet landed on its surface.'
+    }
   ],
 
   // Planet details

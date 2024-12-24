@@ -11,6 +11,7 @@ import WelcomeOverlay from './components/WelcomeOverlay/WelcomeOverlay'
 import CelestialBody from './components/ClestialBody/CelestialBody'
 import Controls from './components/Controls/Controls'
 import EarthMoonSystem from './components/EarthMoonSystem/EarthMoonSystem'
+import MarsMoonSystem from './components/MarsMoonSystem/MarsMoonSystem'
 
 function SolarSystem() {
   const { sun, planets, moons, selectedPlanet, setSelectedPlanet } = usePlanetStore()
@@ -70,6 +71,8 @@ function SolarSystem() {
   }, [])
 
   const earth = planets.find(p => p.id === 'earth')
+  const mars = planets.find(p => p.id === 'mars')
+  const marsMoons = moons.filter(m => m.id === 'phobos' || m.id === 'deimos')
 
   return (
     <Box
@@ -126,7 +129,7 @@ function SolarSystem() {
         </Box>
 
         {planets
-          .filter(planet => planet.id !== 'earth')
+          .filter(planet => planet.id !== 'earth' && planet.id !== 'mars')
           .map((planet, index) => (
             <OrbitingBody
               key={planet.id}
@@ -150,6 +153,19 @@ function SolarSystem() {
             setCurrentRotations={setCurrentRotations}
             onEarthClick={() => setSelectedPlanet(earth)}
             onMoonClick={() => setSelectedPlanet(moons[0])}
+          />
+        )}
+
+        {mars && (
+          <MarsMoonSystem
+            mars={mars}
+            moons={marsMoons}
+            isPlaying={isPlaying}
+            speedMultiplier={speedMultiplier}
+            currentRotations={currentRotations}
+            setCurrentRotations={setCurrentRotations}
+            onMarsClick={() => setSelectedPlanet(mars)}
+            onMoonClick={(moon) => setSelectedPlanet(moon)}
           />
         )}
       </Box>
