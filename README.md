@@ -8,7 +8,7 @@
     <br />
     <a href="">View Demo</a>
     ·
-    <a href="https://github.com/RaHasib/SolarSystem/issuess">Report Bug</a>
+    <a href="https://github.com/RaHasib/SolarSystem/issues">Report Bug</a>
     ·
     <a href="https://github.com/RaHasib/SolarSystem/issues">Request Feature</a>
   </p>
