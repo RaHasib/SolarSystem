@@ -1,109 +1,98 @@
-import { Box, VStack, Text, HStack, Grid, Tooltip, Stat, StatLabel, StatNumber } from '@chakra-ui/react'
+import { VStack, HStack, Text, Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import { FaThermometerHalf, FaWeight, FaRuler, FaClock } from 'react-icons/fa'
-import { usePlanetStore, Planet, Sun, Moon } from '../../../../../store/planetStore'
+import { usePlanetStore, Stats as StatsType } from '../../../../../store/planetStore'
 
 const MotionBox = motion(Box)
 
-function Stats () {
-  const { selectedPlanet } = usePlanetStore()
+function Stats() {
+  const { selectedPlanet, moons } = usePlanetStore()
 
-  if (!selectedPlanet) return null
+  if (!selectedPlanet || !selectedPlanet.stats) return null
 
-  const celestialBody = selectedPlanet as Planet | Sun | Moon
+  const isMoon = moons.some(moon => moon.id === selectedPlanet.id)
+  
+  const getFormattedDistance = () => {
+    const distance = selectedPlanet.stats.distanceFromSun
+    if (!distance) return null
+
+    if (isMoon) {
+      return distance 
+    }
+    return distance 
+  }
+
+  const stats = selectedPlanet.stats as StatsType
 
   return (
     <MotionBox
-      initial={{ y: -20, opacity: 0 }}
+      initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.3 }}
     >
-      <VStack spacing={4} align="stretch">
-        <HStack spacing={2} px={4}>
-          <Text fontSize="xl" fontWeight="bold">
-            📊
-          </Text>
-          <Text fontSize="xl" fontWeight="bold">
-            Quick Stats
-          </Text>
-        </HStack>
+      <VStack
+        spacing={4}
+        align="stretch"
+        bg="whiteAlpha.100"
+        p={4}
+        borderRadius="lg"
+        backdropFilter="blur(10px)"
+      >
+        <Text fontSize="xl" fontWeight="bold" color="white">
+          Stats
+        </Text>
+        <VStack align="stretch" spacing={3}>
+          <HStack justify="space-between">
+            <Text color="gray.300">Temperature</Text>
+            <Text color="white">{stats.temperature}</Text>
+          </HStack>
+          
+          <HStack justify="space-between">
+            <Text color="gray.300">Mass</Text>
+            <Text color="white">{stats.mass}</Text>
+          </HStack>
+          
+          <HStack justify="space-between">
+            <Text color="gray.300">Diameter</Text>
+            <Text color="white">{stats.diameter}</Text>
+          </HStack>
+          
+          <HStack justify="space-between">
+            <Text color="gray.300">Day Length</Text>
+            <Text color="white">{stats.dayLength}</Text>
+          </HStack>
 
-        <Grid templateColumns="repeat(2, 1fr)" gap={4} p={4}>
-          <Tooltip label="Average Temperature" placement="top">
-            <Stat
-              bg="whiteAlpha.100"
-              p={3}
-              borderRadius="xl"
-              _hover={{ bg: 'whiteAlpha.200' }}
-              transition="all 0.2s"
-            >
-              <HStack spacing={2}>
-                <FaThermometerHalf />
-                <StatLabel>Temperature</StatLabel>
-              </HStack>
-              <StatNumber fontSize="md" mt={1}>
-                {'stats' in celestialBody ? celestialBody.stats?.temperature || 'N/A' : 'N/A'}
-              </StatNumber>
-            </Stat>
-          </Tooltip>
+          {stats.gravity && (
+            <HStack justify="space-between">
+              <Text color="gray.300">Gravity</Text>
+              <Text color="white">{stats.gravity}</Text>
+            </HStack>
+          )}
 
-          <Tooltip label="Planet Mass" placement="top">
-            <Stat
-              bg="whiteAlpha.100"
-              p={3}
-              borderRadius="xl"
-              _hover={{ bg: 'whiteAlpha.200' }}
-              transition="all 0.2s"
-            >
-              <HStack spacing={2}>
-                <FaWeight />
-                <StatLabel>Mass</StatLabel>
-              </HStack>
-              <StatNumber fontSize="md" mt={1}>
-                {'stats' in celestialBody ? celestialBody.stats?.mass || 'N/A' : 'N/A'}
-              </StatNumber>
-            </Stat>
-          </Tooltip>
+          {stats.distanceFromSun && (
+            <HStack justify="space-between">
+              <Text color="gray.300">
+                {isMoon ? 'Orbital Distance' : 'Distance from Sun'}
+              </Text>
+              <Text color="white">
+                {getFormattedDistance()}
+              </Text>
+            </HStack>
+          )}
 
-          <Tooltip label="Planet Diameter" placement="top">
-            <Stat
-              bg="whiteAlpha.100"
-              p={3}
-              borderRadius="xl"
-              _hover={{ bg: 'whiteAlpha.200' }}
-              transition="all 0.2s"
-            >
-              <HStack spacing={2}>
-                <FaRuler />
-                <StatLabel>Diameter</StatLabel>
-              </HStack>
-              <StatNumber fontSize="md" mt={1}>
-                {'stats' in celestialBody ? celestialBody.stats?.diameter || 'N/A' : 'N/A'}
-              </StatNumber>
-            </Stat>
-          </Tooltip>
-
-          <Tooltip label="Length of Day" placement="top">
-            <Stat
-              bg="whiteAlpha.100"
-              p={3}
-              borderRadius="xl"
-              _hover={{ bg: 'whiteAlpha.200' }}
-              transition="all 0.2s"
-            >
-              <HStack spacing={2}>
-                <FaClock />
-                <StatLabel>Day Length</StatLabel>
-              </HStack>
-              <StatNumber fontSize="md" mt={1}>
-                {'stats' in celestialBody ? celestialBody.stats?.dayLength || 'N/A' : 'N/A'}
-              </StatNumber>
-            </Stat>
-          </Tooltip>
-        </Grid>
+          {stats.atmosphere && stats.atmosphere.length > 0 && (
+            <VStack align="stretch" spacing={1}>
+              <Text color="gray.300">Atmosphere</Text>
+              <Box pl={4}>
+                {stats.atmosphere.map((gas, index) => (
+                  <Text key={index} color="white">• {gas}</Text>
+                ))}
+              </Box>
+            </VStack>
+          )}
+        </VStack>
       </VStack>
     </MotionBox>
   )
-} 
+}
 
-export default Stats;
+export default Stats

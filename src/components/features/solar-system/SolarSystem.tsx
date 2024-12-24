@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react'
+import  { useState, useEffect, useMemo } from 'react'
 import { Box } from '@chakra-ui/react'
 import { usePlanetStore } from '../../../store/planetStore'
 
@@ -12,6 +12,11 @@ import CelestialBody from './components/ClestialBody/CelestialBody'
 import Controls from './components/Controls/Controls'
 import EarthMoonSystem from './components/EarthMoonSystem/EarthMoonSystem'
 import MarsMoonSystem from './components/MarsMoonSystem/MarsMoonSystem'
+import JupiterMoonSystem from './components/JupiterMoonSystem/JupiterMoonSystem'
+import SaturnMoonSystem from './components/SaturnMoonSystem/SaturnMoonSystem'
+import UranusMoonSystem from './components/UranusMoonSystem/UranusMoonSystem'
+import NeptuneMoonSystem from './components/NeptuneMoonSystem/NeptuneMoonSystem'
+import AsteroidBelt from './components/AsteroidBelt/AsteroidBelt'
 
 function SolarSystem() {
   const { sun, planets, moons, selectedPlanet, setSelectedPlanet } = usePlanetStore()
@@ -24,13 +29,13 @@ function SolarSystem() {
   const [showHelp, setShowHelp] = useState(false)
 
   const handleZoomIn = () => setScale(prev => {
-    const newScale = Math.min(prev + 0.2, 2)
-    return Number(newScale.toFixed(1))
+    const newScale = Math.min(prev + 0.1, 2)
+    return Number(newScale.toFixed(2))
   })
 
   const handleZoomOut = () => setScale(prev => {
-    const newScale = Math.max(prev - 0.2, 0.5)
-    return Number(newScale.toFixed(1))
+    const newScale = Math.max(prev - 0.1, 0.3)
+    return Number(newScale.toFixed(2))
   })
 
   const handleSpeedUp = () => setSpeedMultiplier(prev => {
@@ -73,6 +78,38 @@ function SolarSystem() {
   const earth = planets.find(p => p.id === 'earth')
   const mars = planets.find(p => p.id === 'mars')
   const marsMoons = moons.filter(m => m.id === 'phobos' || m.id === 'deimos')
+  const jupiterMoons = useMemo(() => 
+    moons.filter(moon => ['io', 'europa', 'ganymede', 'callisto'].includes(moon.id)),
+    [moons]
+  )
+  const jupiter = useMemo(() => 
+    planets.find(planet => planet.id === 'jupiter'),
+    [planets]
+  )
+  const saturnMoons = useMemo(() => 
+    moons.filter(moon => ['titan', 'enceladus', 'mimas'].includes(moon.id)),
+    [moons]
+  )
+  const saturn = useMemo(() => 
+    planets.find(planet => planet.id === 'saturn'),
+    [planets]
+  )
+  const uranusMoons = useMemo(() => 
+    moons.filter(moon => ['titania', 'oberon', 'miranda'].includes(moon.id)),
+    [moons]
+  )
+  const uranus = useMemo(() => 
+    planets.find(planet => planet.id === 'uranus'),
+    [planets]
+  )
+  const neptuneMoons = useMemo(() => 
+    moons.filter(moon => ['triton', 'naiad'].includes(moon.id)),
+    [moons]
+  )
+  const neptune = useMemo(() => 
+    planets.find(planet => planet.id === 'neptune'),
+    [planets]
+  )
 
   return (
     <Box
@@ -165,6 +202,65 @@ function SolarSystem() {
             currentRotations={currentRotations}
             setCurrentRotations={setCurrentRotations}
             onMarsClick={() => setSelectedPlanet(mars)}
+            onMoonClick={(moon) => setSelectedPlanet(moon)}
+          />
+        )}
+
+        <AsteroidBelt
+          innerRadius={210}
+          outerRadius={320}
+          isPlaying={isPlaying}
+          speedMultiplier={speedMultiplier}
+        />
+
+        {jupiter && (
+          <JupiterMoonSystem
+            jupiter={jupiter}
+            moons={jupiterMoons}
+            isPlaying={isPlaying}
+            speedMultiplier={speedMultiplier}
+            currentRotations={currentRotations}
+            setCurrentRotations={setCurrentRotations}
+            onJupiterClick={() => setSelectedPlanet(jupiter)}
+            onMoonClick={(moon) => setSelectedPlanet(moon)}
+          />
+        )}
+
+        {saturn && (
+          <SaturnMoonSystem
+            saturn={saturn}
+            moons={saturnMoons}
+            isPlaying={isPlaying}
+            speedMultiplier={speedMultiplier}
+            currentRotations={currentRotations}
+            setCurrentRotations={setCurrentRotations}
+            onSaturnClick={() => setSelectedPlanet(saturn)}
+            onMoonClick={(moon) => setSelectedPlanet(moon)}
+          />
+        )}
+
+        {uranus && (
+          <UranusMoonSystem
+            uranus={uranus}
+            moons={uranusMoons}
+            isPlaying={isPlaying}
+            speedMultiplier={speedMultiplier}
+            currentRotations={currentRotations}
+            setCurrentRotations={setCurrentRotations}
+            onUranusClick={() => setSelectedPlanet(uranus)}
+            onMoonClick={(moon) => setSelectedPlanet(moon)}
+          />
+        )}
+
+        {neptune && (
+          <NeptuneMoonSystem
+            neptune={neptune}
+            moons={neptuneMoons}
+            isPlaying={isPlaying}
+            speedMultiplier={speedMultiplier}
+            currentRotations={currentRotations}
+            setCurrentRotations={setCurrentRotations}
+            onNeptuneClick={() => setSelectedPlanet(neptune)}
             onMoonClick={(moon) => setSelectedPlanet(moon)}
           />
         )}

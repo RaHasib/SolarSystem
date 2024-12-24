@@ -19,6 +19,7 @@ function Controls ({
   speedMultiplier,
   handleSpeedUp,
   handleSpeedDown,
+  scale,
   handleZoomIn,
   handleZoomOut,
   setShowHelp
@@ -70,7 +71,7 @@ function Controls ({
       </VStack>
       <VStack>
         <Text color="white" fontSize="sm" fontWeight="bold">
-          Zoom
+          Zoom: {(scale * 100).toFixed(0)}%
         </Text>
         <HStack>
           <IconButton
@@ -81,6 +82,7 @@ function Controls ({
             size="lg"
             borderRadius="full"
             _hover={{ transform: 'scale(1.1)' }}
+            isDisabled={scale <= 0.3}
           />
           <IconButton
             aria-label="Zoom In"
@@ -90,6 +92,7 @@ function Controls ({
             size="lg"
             borderRadius="full"
             _hover={{ transform: 'scale(1.1)' }}
+            isDisabled={scale >= 2}
           />
         </HStack>
       </VStack>

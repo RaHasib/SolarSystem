@@ -7,11 +7,13 @@ import { usePlanetStore, Planet, Sun, Moon } from '../../../../../store/planetSt
 const MotionBox = motion(Box)
 
 function Header () {
-  const { selectedPlanet } = usePlanetStore()
+  const { selectedPlanet, moons } = usePlanetStore()
 
   if (!selectedPlanet) return null
 
   const celestialBody = selectedPlanet as Planet | Sun | Moon
+  
+  const isMoon = moons.some(moon => moon.id === celestialBody.id)
 
   return (
     <MotionBox 
@@ -70,7 +72,7 @@ function Header () {
           textTransform="none"
         >
           {celestialBody.id === 'sun' ? 'Star' : 
-           celestialBody.id === 'moon' ? 'Natural Satellite' : 
+           isMoon ? 'Natural Satellite' : 
            'Planet'}
         </Badge>
       </VStack>

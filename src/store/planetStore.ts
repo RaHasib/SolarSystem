@@ -21,33 +21,17 @@ import {
 import { IconType } from 'react-icons'
 
 // Interfaces
-export interface PlanetStats {
+export interface Stats {
+  temperature: string
   mass: string
   diameter: string
-  gravity: string
   dayLength: string
-  distanceFromSun: string
-  temperature: string
+  gravity?: string
+  distanceFromSun?: string
   atmosphere?: string[]
 }
 
-export interface Planet {
-  id: string
-  name: string
-  color: string
-  size: number
-  orbitRadius: number
-  rotationSpeed: number
-  description: string
-  facts: string[]
-  icon: IconType
-  gradient: string
-  stats: PlanetStats
-  funFact: string
-  explorationStatus: string
-}
-
-export interface Moon {
+export interface CelestialBody {
   id: string
   name: string
   icon: IconType
@@ -57,29 +41,20 @@ export interface Moon {
   rotationSpeed: number
   description: string
   facts: string[]
-  stats?: PlanetStats
+  stats: Stats
   funFact?: string
   explorationStatus?: string
 }
 
-export interface Sun {
-  id: string
-  name: string
-  icon: IconType
-  gradient: string
-  size: number
-  description: string
-  facts: string[]
-  stats: {
-    temperature: string
-    mass: string
-    diameter: string
-    dayLength: string
-    gravity?: string
-    distanceFromSun?: string
-  }
-  funFact: string
-  explorationStatus: string
+export interface Planet extends CelestialBody {
+  color: string
+}
+
+export interface Moon extends CelestialBody {
+  parentPlanetId?: string
+}
+
+export interface Sun extends Omit<CelestialBody, 'orbitRadius' | 'rotationSpeed'> {
   volumeComparedToEarth: number
 }
 
@@ -103,25 +78,26 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
     id: 'sun',
     name: 'Sun',
     icon: WiSolarEclipse,
-    gradient: 'linear-gradient(to bottom right, #FDB813, #FF8C42)',
-    size: 60,
-    description: 'The star at the center of our Solar System, a massive sphere of hot plasma sustained by nuclear fusion.',
+    gradient: 'linear-gradient(45deg, #FFD700, #FFA500)',
+    size: 80,
+    description: 'The star at the center of our Solar System!',
     facts: [
-      '🌟 Contains 99.86% of all mass in our Solar System',
-      '🔥 Core temperature reaches 15 million°C',
-      '⚡ Light takes 8 minutes 20 seconds on average to reach Earth',
-      '📏 Diameter is 109 times wider than Earth',
-      '⏳ About halfway through its 10-billion-year lifespan'
+      '☀️ Contains 99.86% of the Solar System\'s mass',
+      '🔥 Surface temperature is about 5,500°C',
+      '⚡ Produces enough energy in 1 second to power Earth for 500,000 years',
+      '🌟 Is actually white, appears yellow through Earth\'s atmosphere',
+      '🎯 Takes up 99.86% of our solar system\'s mass',
     ],
     stats: {
-      temperature: '5,500°C (surface) / 15 million°C (core)',
-      mass: '1.989 × 10^30 kg (333,000 × Earth)',
-      diameter: '1,392,700 km (109 × Earth)',
-      dayLength: '27 Earth days (at equator)',
+      temperature: '5,500°C (surface)',
+      mass: '1.989 × 10^30 kg',
+      diameter: '1.392 million km',
+      dayLength: '27 Earth days',
+      gravity: '274 m/s²'
     },
-    volumeComparedToEarth: 960000,
-    funFact: 'About 960,000 Earths could fit inside the Sun when accounting for the spacing between spheres. The Sun is so massive it contains 99.86% of all mass in our Solar System!',
-    explorationStatus: 'Currently studied by missions like Parker Solar Probe and Solar Orbiter, helping us understand solar dynamics and space weather.'
+    volumeComparedToEarth: 1300000,
+    funFact: 'The Sun is so big that about 1.3 million Earths could fit inside it!',
+    explorationStatus: 'Studied by various space missions including Parker Solar Probe and Solar Orbiter.',
   },
 
   // Moon details
@@ -209,6 +185,307 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       },
       funFact: 'From Mars\' surface, Deimos would appear about as bright as Venus appears from Earth!',
       explorationStatus: 'Studied by various Mars missions, though no spacecraft has yet landed on its surface.'
+    },
+    {
+      id: 'io',
+      name: 'Io',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #FFD700, #FF8C00)',
+      size: 12,
+      orbitRadius: 30,
+      rotationSpeed: 4,
+      description: 'The most volcanically active body in the Solar System!',
+      facts: [
+        '🌋 Has over 400 active volcanoes',
+        '🔥 Surface constantly renewed by volcanic activity',
+        '🌡️ Surface temperature averages -130°C',
+        '⚡ Creates powerful electrical currents with Jupiter',
+        '🎨 Yellow-orange color from sulfur deposits'
+      ],
+      stats: {
+        temperature: '-130°C',
+        mass: '8.93 × 10^22 kg',
+        diameter: '3,642 km',
+        dayLength: '1.77 Earth days',
+        gravity: '1.796 m/s²',
+        distanceFromSun: '421,700 km from Jupiter'
+      }
+    },
+    {
+      id: 'europa',
+      name: 'Europa',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #FFFFFF, #87CEEB)',
+      size: 10,
+      orbitRadius: 40,
+      rotationSpeed: 5,
+      description: 'An icy moon with a subsurface ocean that might harbor life!',
+      facts: [
+        '🌊 Has a global ocean under its icy surface',
+        '🧊 Surface is the smoothest in the Solar System',
+        '👽 Potential candidate for extraterrestrial life',
+        '❄️ Ice shell estimated to be 10-30 km thick',
+        '🌌 Has a very thin atmosphere of oxygen'
+      ],
+      stats: {
+        temperature: '-160°C',
+        mass: '4.8 × 10^22 kg',
+        diameter: '3,122 km',
+        dayLength: '3.55 Earth days',
+        gravity: '1.315 m/s²',
+        distanceFromSun: '671,100 km from Jupiter'
+      }
+    },
+    {
+      id: 'ganymede',
+      name: 'Ganymede',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #C0C0C0, #808080)',
+      size: 14,
+      orbitRadius: 50,
+      rotationSpeed: 6,
+      description: 'The largest moon in our Solar System, bigger than Mercury!',
+      facts: [
+        '🏆 Largest moon in the Solar System',
+        '🧲 Only moon with its own magnetic field',
+        '🌊 May have a subsurface ocean',
+        '📏 Larger than planet Mercury',
+        '🛡️ Has a thin oxygen atmosphere'
+      ],
+      stats: {
+        temperature: '-163°C',
+        mass: '1.48 × 10^23 kg',
+        diameter: '5,268 km',
+        dayLength: '7.15 Earth days',
+        gravity: '1.428 m/s²',
+        distanceFromSun: '1.07 million km from Jupiter'
+      }
+    },
+    {
+      id: 'callisto',
+      name: 'Callisto',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #696969, #2F4F4F)',
+      size: 13,
+      orbitRadius: 60,
+      rotationSpeed: 7,
+      description: 'The most heavily cratered object in the Solar System!',
+      facts: [
+        '🎯 Most heavily cratered object in Solar System',
+        '🧊 May have a subsurface ocean',
+        '🌍 Same size as Mercury but half the mass',
+        '⚡ Has a thin atmosphere of carbon dioxide',
+        '🏔️ Surface is ancient and unchanged'
+      ],
+      stats: {
+        temperature: '-150°C',
+        mass: '1.08 × 10^23 kg',
+        diameter: '4,821 km',
+        dayLength: '16.7 Earth days',
+        gravity: '1.235 m/s²',
+        distanceFromSun: '1.88 million km from Jupiter'
+      }
+    },
+    {
+      id: 'titan',
+      name: 'Titan',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #FFA500, #8B4513)',
+      size: 16,
+      orbitRadius: 50,
+      rotationSpeed: 5,
+      description: 'Saturn\'s largest moon and the only moon known to have a dense atmosphere!',
+      facts: [
+        '🌍 Larger than planet Mercury',
+        '🌊 Only moon with liquid on its surface',
+        '🌫️ Has a thick atmosphere like Earth',
+        '🛸 Could potentially support life',
+        '🌡️ Surface temperature around -179°C'
+      ],
+      stats: {
+        temperature: '-179°C',
+        mass: '1.345 × 10^23 kg',
+        diameter: '5,150 km',
+        dayLength: '15.9 Earth days',
+        gravity: '1.352 m/s²',
+        distanceFromSun: '1.2 million km from Saturn',
+        atmosphere: ['Nitrogen', 'Methane']
+      }
+    },
+    {
+      id: 'enceladus',
+      name: 'Enceladus',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #F0FFFF, #E0FFFF)',
+      size: 8,
+      orbitRadius: 40,
+      rotationSpeed: 3,
+      description: 'An icy moon with spectacular water geysers erupting from its south pole!',
+      facts: [
+        '💦 Shoots water geysers into space',
+        '❄️ Surface is pure white ice',
+        '🌊 Has a subsurface ocean',
+        '🔥 Has hydrothermal activity',
+        '✨ Reflects almost 100% of sunlight'
+      ],
+      stats: {
+        temperature: '-198°C',
+        mass: '1.08 × 10^20 kg',
+        diameter: '504 km',
+        dayLength: '1.37 Earth days',
+        gravity: '0.113 m/s²',
+        distanceFromSun: '238,000 km from Saturn'
+      }
+    },
+    {
+      id: 'mimas',
+      name: 'Mimas',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #DCDCDC, #A9A9A9)',
+      size: 7,
+      orbitRadius: 30,
+      rotationSpeed: 2,
+      description: 'Known as the "Death Star" moon due to its large impact crater!',
+      facts: [
+        '🎯 Has a huge crater named Herschel',
+        '🌡️ Temperature varies dramatically',
+        '🪨 Mostly made of ice and rock',
+        '🎮 Looks like the Death Star',
+        '🌍 Smallest round object in the Solar System'
+      ],
+      stats: {
+        temperature: '-209°C',
+        mass: '3.7 × 10^19 kg',
+        diameter: '396 km',
+        dayLength: '0.9 Earth days',
+        gravity: '0.064 m/s²',
+        distanceFromSun: '185,520 km from Saturn'
+      }
+    },
+    {
+      id: 'titania',
+      name: 'Titania',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #D3D3D3, #A9A9A9)',
+      size: 12,
+      orbitRadius: 40,
+      rotationSpeed: 5,
+      description: 'The largest moon of Uranus, covered in ice and canyons!',
+      facts: [
+        '❄️ Surface is mostly water ice and rock',
+        '🌋 Shows signs of past geological activity',
+        '🏔️ Has huge canyons up to 100km deep',
+        '📏 Largest of Uranus\' moons',
+        '🌑 Takes 8.7 Earth days to orbit Uranus'
+      ],
+      stats: {
+        temperature: '-203°C',
+        mass: '3.4 × 10^21 kg',
+        diameter: '1,578 km',
+        dayLength: '8.7 Earth days',
+        gravity: '0.367 m/s²',
+        distanceFromSun: '436,300 km from Uranus'
+      }
+    },
+    {
+      id: 'oberon',
+      name: 'Oberon',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #8B8989, #696969)',
+      size: 11,
+      orbitRadius: 50,
+      rotationSpeed: 6,
+      description: 'The outermost major moon of Uranus, heavily cratered and mysterious!',
+      facts: [
+        '🎯 Most heavily cratered of Uranian moons',
+        '🏔️ Has a mountain nearly 6km high',
+        '❄️ Surface composed of ice and rock',
+        '🌑 Second largest moon of Uranus',
+        '🔭 Named after a character from Shakespeare'
+      ],
+      stats: {
+        temperature: '-198°C',
+        mass: '3.0 × 10^21 kg',
+        diameter: '1,522 km',
+        dayLength: '13.5 Earth days',
+        gravity: '0.354 m/s²',
+        distanceFromSun: '583,500 km from Uranus'
+      }
+    },
+    {
+      id: 'miranda',
+      name: 'Miranda',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #E8E8E8, #B8B8B8)',
+      size: 8,
+      orbitRadius: 30,
+      rotationSpeed: 4,
+      description: 'The smallest and innermost of Uranus\' major moons, with a unique, patchwork surface!',
+      facts: [
+        '🧩 Has a bizarre patchwork surface',
+        '🏜️ Features cliffs up to 20km high',
+        '❄️ Composed mainly of ice and rock',
+        '🌋 Shows signs of past geological activity',
+        '🎭 Named after character from Shakespeare'
+      ],
+      stats: {
+        temperature: '-187°C',
+        mass: '6.6 × 10^19 kg',
+        diameter: '472 km',
+        dayLength: '1.4 Earth days',
+        gravity: '0.079 m/s²',
+        distanceFromSun: '129,900 km from Uranus'
+      }
+    },
+    {
+      id: 'triton',
+      name: 'Triton',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #B0C4DE, #4682B4)',
+      size: 13,
+      orbitRadius: 40,
+      rotationSpeed: 5,
+      description: 'Neptune\'s largest moon, orbiting backwards and spewing nitrogen geysers!',
+      facts: [
+        '🔄 Only large moon that orbits backwards',
+        '❄️ Coldest known object in solar system',
+        '💨 Has active nitrogen geysers',
+        '🌋 Surface is geologically young and active',
+        '🛸 Likely a captured dwarf planet'
+      ],
+      stats: {
+        temperature: '-235°C',
+        mass: '2.14 × 10^22 kg',
+        diameter: '2,707 km',
+        dayLength: '5.9 Earth days',
+        gravity: '0.779 m/s²',
+        distanceFromSun: '354,800 km from Neptune'
+      }
+    },
+    {
+      id: 'naiad',
+      name: 'Naiad',
+      icon: WiMoonAltNew,
+      gradient: 'linear-gradient(45deg, #778899, #2F4F4F)',
+      size: 6,
+      orbitRadius: 30,
+      rotationSpeed: 3,
+      description: 'One of Neptune\'s inner moons, dancing in a unique orbital pattern!',
+      facts: [
+        '💃 Performs a unique "dance" with Thalassa',
+        '🔄 Orbits Neptune in less than a day',
+        '🪨 Likely formed from debris of larger moons',
+        '📏 One of Neptune\'s smallest moons',
+        '🌑 Very dark surface reflecting only 6% of light'
+      ],
+      stats: {
+        temperature: '-222°C',
+        mass: '2 × 10^16 kg',
+        diameter: '58 km',
+        dayLength: '0.294 Earth days',
+        gravity: '0.002 m/s²',
+        distanceFromSun: '48,227 km from Neptune'
+      }
     }
   ],
 
@@ -282,7 +559,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       rotationSpeed: 12,
       description: 'Our cosmic home! The only planet where you can get pizza delivered (so far).',
       facts: [
-        '🌊 Has more water than any other rocky planet',
+        '🌍 Has more water than any other rocky planet',
         '🦕 Home to millions of different species',
         '🌈 The only planet not named after a god or goddess',
         '🌙 Has the perfect moon to create eclipses',
@@ -306,7 +583,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       color: '#FF4500',
       gradient: 'linear-gradient(45deg, #FF4500, #8B0000)',
       size: 24,
-      orbitRadius: 200,
+      orbitRadius: 230,
       rotationSpeed: 14,
       description: 'The Red Planet! Home to the tallest mountain in our solar system and our robot friends!',
       facts: [
@@ -334,7 +611,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       color: '#DAA520',
       gradient: 'linear-gradient(45deg, #CD853F, #8B4513)',
       size: 45,
-      orbitRadius: 250,
+      orbitRadius: 330,
       rotationSpeed: 16,
       description: 'The Big Boss of the planets! So massive it could fit 1,300 Earths inside!',
       facts: [
@@ -362,7 +639,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       color: '#F4A460',
       gradient: 'linear-gradient(45deg, #FFE4B5, #DEB887)',
       size: 40,
-      orbitRadius: 300,
+      orbitRadius: 450,
       rotationSpeed: 18,
       description: 'The Showoff! Strutting its fancy rings like a cosmic hula hoop champion!',
       facts: [
@@ -390,7 +667,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       color: '#87CEEB',
       gradient: 'linear-gradient(45deg, #87CEEB, #4169E1)',
       size: 32,
-      orbitRadius: 350,
+      orbitRadius: 570,
       rotationSpeed: 20,
       description: 'The Sideways Spinner! This ice giant decided to roll around the Sun instead of spinning like others!',
       facts: [
@@ -418,7 +695,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       color: '#1E90FF',
       gradient: 'linear-gradient(45deg, #00BFFF, #0000CD)',
       size: 30,
-      orbitRadius: 400,
+      orbitRadius: 670,
       rotationSpeed: 22,
       description: 'The Windy Wonder! This blue beauty has the fastest winds in the solar system!',
       facts: [
@@ -446,7 +723,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       color: '#A0522D',
       gradient: 'linear-gradient(45deg, #8B4513, #A0522D)',
       size: 15,
-      orbitRadius: 450,
+      orbitRadius: 760,
       rotationSpeed: 24,
       description: 'The Little Planet That Could! Not officially a planet anymore, but still in our hearts!',
       facts: [

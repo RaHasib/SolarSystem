@@ -58,12 +58,21 @@ Navigate to `http://localhost:3000`
   - Venus
   - Earth (with Moon system)
   - Mars
+  - Asteroid Belt
   - Jupiter
   - Saturn
   - Uranus
   - Neptune
   - Pluto
 - **Moons**: Earth's Moon with realistic orbit
+- **Moons**: Jupiter's Moon with realistic orbit
+- **Moons**: Saturn's Moon with realistic orbit
+- **Moons**: Uranus's Moon with realistic orbit
+- **Moons**: Neptune's Moon with realistic orbit
+- **Moons**: Pluto's Moon with realistic orbit
+- **Asteroid Belt**: A collection of small bodies orbiting between Jupiter and Mars
+
+
 
 ## 🎨 Design Features
 
