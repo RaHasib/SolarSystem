@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import { motion, ResolvedValues } from 'framer-motion'
-import { Planet, Moon } from '../../../../../store/planetStore'
-import CelestialBody from '../ClestialBody/CelestialBody'
+import { Planet, Moon } from '../../../../../../store/planetStore'
+import CelestialBody from '../../ClestialBody/CelestialBody'
 
 interface UranusMoonSystemProps {
   uranus: Planet

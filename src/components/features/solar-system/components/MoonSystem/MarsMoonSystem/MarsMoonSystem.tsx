@@ -1,36 +1,36 @@
 import { Box } from '@chakra-ui/react'
 import { motion, ResolvedValues } from 'framer-motion'
-import { Planet, Moon } from '../../../../../store/planetStore'
-import CelestialBody from '../ClestialBody/CelestialBody'
+import { Planet, Moon } from '../../../../../../store/planetStore'
+import CelestialBody from '../../ClestialBody/CelestialBody'
 
-interface JupiterMoonSystemProps {
-  jupiter: Planet
+interface MarsMoonSystemProps {
+  mars: Planet
   moons: Moon[]
   isPlaying: boolean
   speedMultiplier: number
   currentRotations: { [key: string]: number }
   setCurrentRotations: (fn: (prev: { [key: string]: number }) => { [key: string]: number }) => void
-  onJupiterClick: () => void
+  onMarsClick: () => void
   onMoonClick: (moon: Moon) => void
 }
 
-function JupiterMoonSystem({
-  jupiter,
+function MarsMoonSystem({
+  mars,
   moons,
   isPlaying,
   speedMultiplier,
   currentRotations,
   setCurrentRotations,
-  onJupiterClick,
+  onMarsClick,
   onMoonClick
-}: JupiterMoonSystemProps) {
+}: MarsMoonSystemProps) {
   return (
     <Box
       position="absolute"
       left="50%"
       top="50%"
-      width={`${Number(jupiter.orbitRadius) * 2}px`}
-      height={`${Number(jupiter.orbitRadius) * 2}px`}
+      width={`${Number(mars.orbitRadius) * 2}px`}
+      height={`${Number(mars.orbitRadius) * 2}px`}
       transform="translate(-50%, -50%)"
       borderRadius="50%"
       border="1px dashed rgba(255,255,255,0.2)"
@@ -45,12 +45,12 @@ function JupiterMoonSystem({
         }}
         animate={{
           rotate: isPlaying ? [
-            currentRotations[jupiter.id] || 0,
-            ((currentRotations[jupiter.id] || 0) + 360)
-          ] : currentRotations[jupiter.id] || 0
+            currentRotations[mars.id] || 0,
+            ((currentRotations[mars.id] || 0) + 360)
+          ] : currentRotations[mars.id] || 0
         }}
         transition={{
-          duration: Number(jupiter.rotationSpeed) / speedMultiplier,
+          duration: Number(mars. rotationSpeed) / speedMultiplier,
           repeat: isPlaying ? Infinity : 0,
           ease: "linear",
           repeatDelay: 0
@@ -60,24 +60,24 @@ function JupiterMoonSystem({
             const rotation = Math.round(latest.rotate);
             setCurrentRotations(prev => ({
               ...prev,
-              [jupiter.id]: ((rotation % 360) + 360) % 360
+              [mars.id]: ((rotation % 360) + 360) % 360
             }));
           }
         }}
       >
-        {/* Jupiter */}
+        {/* Mars */}
         <Box
           position="absolute"
           top="50%"
           left="50%"
-          transform={`translate(-50%, -50%) translateY(-${Number(jupiter.orbitRadius)}px)`}
+          transform={`translate(-50%, -50%) translateY(-${Number(mars.orbitRadius)}px)`}
           zIndex={150}
           pointerEvents="auto"
-          onClick={onJupiterClick}
+          onClick={onMarsClick}
         >
           <CelestialBody
-            body={jupiter}
-            onClick={onJupiterClick}
+            body={mars}
+            onClick={onMarsClick}
             isPlaying={isPlaying}
           />
 
@@ -109,7 +109,7 @@ function JupiterMoonSystem({
                   ] : currentRotations[moon.id] || 0
                 }}
                 transition={{
-                  duration: Number(moon.rotationSpeed) / speedMultiplier,
+                  duration: Number(moon. rotationSpeed) / speedMultiplier,
                   repeat: isPlaying ? Infinity : 0,
                   ease: "linear",
                   repeatDelay: 0
@@ -148,4 +148,4 @@ function JupiterMoonSystem({
   )
 }
 
-export default JupiterMoonSystem; 
+export default MarsMoonSystem; 

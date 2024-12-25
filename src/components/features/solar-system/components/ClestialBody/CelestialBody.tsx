@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { createElement } from 'react'
 import { IconContext } from 'react-icons'
 import { Sun, Planet, Moon } from '../../../../../store/planetStore'
+import SunCorona from '../SunCorona/SunCorona'
 
 interface CelestialBodyProps {
   body: Sun | Planet | Moon
@@ -51,6 +52,7 @@ function CelestialBody ({ body, onClick, isPlaying, size }: CelestialBodyProps) 
         }
       }}
     >
+      {isSun && <SunCorona />}
       <IconContext.Provider value={{ 
         color: 'white', 
         size: `${(size || body.size) / 2}px`,

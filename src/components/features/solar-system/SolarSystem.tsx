@@ -10,13 +10,14 @@ import HelpModal from './components/HelpModal/HelpModal'
 import WelcomeOverlay from './components/WelcomeOverlay/WelcomeOverlay'
 import CelestialBody from './components/ClestialBody/CelestialBody'
 import Controls from './components/Controls/Controls'
-import EarthMoonSystem from './components/EarthMoonSystem/EarthMoonSystem'
-import MarsMoonSystem from './components/MarsMoonSystem/MarsMoonSystem'
-import JupiterMoonSystem from './components/JupiterMoonSystem/JupiterMoonSystem'
-import SaturnMoonSystem from './components/SaturnMoonSystem/SaturnMoonSystem'
-import UranusMoonSystem from './components/UranusMoonSystem/UranusMoonSystem'
-import NeptuneMoonSystem from './components/NeptuneMoonSystem/NeptuneMoonSystem'
+import EarthMoonSystem from './components/MoonSystem/EarthMoonSystem/EarthMoonSystem'
+import MarsMoonSystem from './components/MoonSystem/MarsMoonSystem/MarsMoonSystem'
+import JupiterMoonSystem from './components/MoonSystem/JupiterMoonSystem/JupiterMoonSystem'
+import SaturnMoonSystem from './components/MoonSystem/SaturnMoonSystem/SaturnMoonSystem'
+import UranusMoonSystem from './components/MoonSystem/UranusMoonSystem/UranusMoonSystem'
+import NeptuneMoonSystem from './components/MoonSystem/NeptuneMoonSystem/NeptuneMoonSystem'
 import AsteroidBelt from './components/AsteroidBelt/AsteroidBelt'
+import StarField from './components/StarField/StarField'
 
 function SolarSystem() {
   const { sun, planets, moons, selectedPlanet, setSelectedPlanet } = usePlanetStore()
@@ -124,6 +125,7 @@ function SolarSystem() {
       alignItems="center"
       justifyContent="center"
     >
+      <StarField />
       <Controls
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}

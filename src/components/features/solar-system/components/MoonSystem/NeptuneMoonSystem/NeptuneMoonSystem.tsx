@@ -1,36 +1,36 @@
 import { Box } from '@chakra-ui/react'
 import { motion, ResolvedValues } from 'framer-motion'
-import { Planet, Moon } from '../../../../../store/planetStore'
-import CelestialBody from '../ClestialBody/CelestialBody'
+import { Planet, Moon } from '../../../../../../store/planetStore'
+import CelestialBody from '../../ClestialBody/CelestialBody'
 
-interface SaturnMoonSystemProps {
-  saturn: Planet
+interface NeptuneMoonSystemProps {
+  neptune: Planet
   moons: Moon[]
   isPlaying: boolean
   speedMultiplier: number
   currentRotations: { [key: string]: number }
   setCurrentRotations: (fn: (prev: { [key: string]: number }) => { [key: string]: number }) => void
-  onSaturnClick: () => void
+  onNeptuneClick: () => void
   onMoonClick: (moon: Moon) => void
 }
 
-function SaturnMoonSystem({
-  saturn,
+function NeptuneMoonSystem({
+  neptune,
   moons,
   isPlaying,
   speedMultiplier,
   currentRotations,
   setCurrentRotations,
-  onSaturnClick,
+  onNeptuneClick,
   onMoonClick
-}: SaturnMoonSystemProps) {
+}: NeptuneMoonSystemProps) {
   return (
     <Box
       position="absolute"
       left="50%"
       top="50%"
-      width={`${Number(saturn.orbitRadius) * 2}px`}
-      height={`${Number(saturn.orbitRadius) * 2}px`}
+      width={`${Number(neptune.orbitRadius) * 2}px`}
+      height={`${Number(neptune.orbitRadius) * 2}px`}
       transform="translate(-50%, -50%)"
       borderRadius="50%"
       border="1px dashed rgba(255,255,255,0.2)"
@@ -45,12 +45,12 @@ function SaturnMoonSystem({
         }}
         animate={{
           rotate: isPlaying ? [
-            currentRotations[saturn.id] || 0,
-            ((currentRotations[saturn.id] || 0) + 360)
-          ] : currentRotations[saturn.id] || 0
+            currentRotations[neptune.id] || 0,
+            ((currentRotations[neptune.id] || 0) + 360)
+          ] : currentRotations[neptune.id] || 0
         }}
         transition={{
-          duration: Number(saturn.rotationSpeed) / speedMultiplier,
+          duration: Number(neptune.rotationSpeed) / speedMultiplier,
           repeat: isPlaying ? Infinity : 0,
           ease: "linear",
           repeatDelay: 0
@@ -60,41 +60,41 @@ function SaturnMoonSystem({
             const rotation = Math.round(latest.rotate);
             setCurrentRotations(prev => ({
               ...prev,
-              [saturn.id]: ((rotation % 360) + 360) % 360
+              [neptune.id]: ((rotation % 360) + 360) % 360
             }));
           }
         }}
       >
-        {/* Saturn with Rings */}
+        {/* Neptune */}
         <Box
           position="absolute"
           top="50%"
           left="50%"
-          transform={`translate(-50%, -50%) translateY(-${Number(saturn.orbitRadius)}px)`}
+          transform={`translate(-50%, -50%) translateY(-${Number(neptune.orbitRadius)}px)`}
           zIndex={150}
           pointerEvents="auto"
-          onClick={onSaturnClick}
+          onClick={onNeptuneClick}
         >
-          {/* Saturn's Rings */}
+          {/* Neptune's faint rings */}
           <Box
             position="absolute"
             top="50%"
             left="50%"
-            width={`${Number(saturn.size) * 2.5}px`}
-            height={`${Number(saturn.size) * 0.8}px`}
+            width={`${Number(neptune.size) * 1.8}px`}
+            height={`${Number(neptune.size) * 0.4}px`}
             transform="translate(-50%, -50%)"
             borderRadius="50%"
-            border="2px solid rgba(255,255,255,0.3)"
+            border="1px solid rgba(255,255,255,0.1)"
             transform-origin="center"
             style={{
-              transform: "translate(-50%, -50%) rotate(-20deg)",
-              background: "linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 100%)"
+              transform: "translate(-50%, -50%) rotate(-5deg)",
+              background: "linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.05) 100%)"
             }}
           />
-          
+
           <CelestialBody
-            body={saturn}
-            onClick={onSaturnClick}
+            body={neptune}
+            onClick={onNeptuneClick}
             isPlaying={isPlaying}
           />
 
@@ -122,7 +122,8 @@ function SaturnMoonSystem({
                 animate={{
                   rotate: isPlaying ? [
                     currentRotations[moon.id] || 0,
-                    ((currentRotations[moon.id] || 0) + 360)
+                    // Triton orbits in the opposite direction
+                    ((currentRotations[moon.id] || 0) + (moon.id === 'triton' ? -360 : 360))
                   ] : currentRotations[moon.id] || 0
                 }}
                 transition={{
@@ -165,4 +166,4 @@ function SaturnMoonSystem({
   )
 }
 
-export default SaturnMoonSystem; 
+export default NeptuneMoonSystem; 

@@ -1,36 +1,36 @@
 import { Box } from '@chakra-ui/react'
 import { motion, ResolvedValues } from 'framer-motion'
-import { Planet, Moon } from '../../../../../store/planetStore'
-import CelestialBody from '../ClestialBody/CelestialBody'
+import { Planet, Moon } from '../../../../../../store/planetStore'
+import CelestialBody from '../../ClestialBody/CelestialBody'
 
-interface MarsMoonSystemProps {
-  mars: Planet
+interface SaturnMoonSystemProps {
+  saturn: Planet
   moons: Moon[]
   isPlaying: boolean
   speedMultiplier: number
   currentRotations: { [key: string]: number }
   setCurrentRotations: (fn: (prev: { [key: string]: number }) => { [key: string]: number }) => void
-  onMarsClick: () => void
+  onSaturnClick: () => void
   onMoonClick: (moon: Moon) => void
 }
 
-function MarsMoonSystem({
-  mars,
+function SaturnMoonSystem({
+  saturn,
   moons,
   isPlaying,
   speedMultiplier,
   currentRotations,
   setCurrentRotations,
-  onMarsClick,
+  onSaturnClick,
   onMoonClick
-}: MarsMoonSystemProps) {
+}: SaturnMoonSystemProps) {
   return (
     <Box
       position="absolute"
       left="50%"
       top="50%"
-      width={`${Number(mars.orbitRadius) * 2}px`}
-      height={`${Number(mars.orbitRadius) * 2}px`}
+      width={`${Number(saturn.orbitRadius) * 2}px`}
+      height={`${Number(saturn.orbitRadius) * 2}px`}
       transform="translate(-50%, -50%)"
       borderRadius="50%"
       border="1px dashed rgba(255,255,255,0.2)"
@@ -45,12 +45,12 @@ function MarsMoonSystem({
         }}
         animate={{
           rotate: isPlaying ? [
-            currentRotations[mars.id] || 0,
-            ((currentRotations[mars.id] || 0) + 360)
-          ] : currentRotations[mars.id] || 0
+            currentRotations[saturn.id] || 0,
+            ((currentRotations[saturn.id] || 0) + 360)
+          ] : currentRotations[saturn.id] || 0
         }}
         transition={{
-          duration: Number(mars. rotationSpeed) / speedMultiplier,
+          duration: Number(saturn.rotationSpeed) / speedMultiplier,
           repeat: isPlaying ? Infinity : 0,
           ease: "linear",
           repeatDelay: 0
@@ -60,24 +60,41 @@ function MarsMoonSystem({
             const rotation = Math.round(latest.rotate);
             setCurrentRotations(prev => ({
               ...prev,
-              [mars.id]: ((rotation % 360) + 360) % 360
+              [saturn.id]: ((rotation % 360) + 360) % 360
             }));
           }
         }}
       >
-        {/* Mars */}
+        {/* Saturn with Rings */}
         <Box
           position="absolute"
           top="50%"
           left="50%"
-          transform={`translate(-50%, -50%) translateY(-${Number(mars.orbitRadius)}px)`}
+          transform={`translate(-50%, -50%) translateY(-${Number(saturn.orbitRadius)}px)`}
           zIndex={150}
           pointerEvents="auto"
-          onClick={onMarsClick}
+          onClick={onSaturnClick}
         >
+          {/* Saturn's Rings */}
+          <Box
+            position="absolute"
+            top="50%"
+            left="50%"
+            width={`${Number(saturn.size) * 2.5}px`}
+            height={`${Number(saturn.size) * 0.8}px`}
+            transform="translate(-50%, -50%)"
+            borderRadius="50%"
+            border="2px solid rgba(255,255,255,0.3)"
+            transform-origin="center"
+            style={{
+              transform: "translate(-50%, -50%) rotate(-20deg)",
+              background: "linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 100%)"
+            }}
+          />
+          
           <CelestialBody
-            body={mars}
-            onClick={onMarsClick}
+            body={saturn}
+            onClick={onSaturnClick}
             isPlaying={isPlaying}
           />
 
@@ -109,7 +126,7 @@ function MarsMoonSystem({
                   ] : currentRotations[moon.id] || 0
                 }}
                 transition={{
-                  duration: Number(moon. rotationSpeed) / speedMultiplier,
+                  duration: Number(moon.rotationSpeed) / speedMultiplier,
                   repeat: isPlaying ? Infinity : 0,
                   ease: "linear",
                   repeatDelay: 0
@@ -148,4 +165,4 @@ function MarsMoonSystem({
   )
 }
 
-export default MarsMoonSystem; 
+export default SaturnMoonSystem; 
